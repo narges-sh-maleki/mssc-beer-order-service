@@ -41,4 +41,7 @@ public interface BeerOrderRepository  extends JpaRepository<BeerOrder, UUID> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     BeerOrder findOneById(UUID id);
+
+
+
 }
