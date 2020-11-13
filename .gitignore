@@ -5,6 +5,13 @@
 /src/test/javascript/coverage/
 /src/test/javascript/PhantomJS*/
 
+
+
+#####NARGES#####
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 ######################
 # Node
 ######################
