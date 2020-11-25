@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package guru.sfg.beer.order.service.web.model;
+package guru.sfg.brewery.common;
 
 import guru.sfg.beer.order.service.services.beer.model.BeerStyleEnum;
 import lombok.Builder;

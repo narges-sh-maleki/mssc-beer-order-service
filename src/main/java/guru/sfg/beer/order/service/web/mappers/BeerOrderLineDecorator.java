@@ -5,7 +5,7 @@ import guru.sfg.beer.order.service.domain.BeerOrderLine;
 import guru.sfg.beer.order.service.services.beer.BeerService;
 import guru.sfg.beer.order.service.services.beer.model.BeerDto;
 import guru.sfg.beer.order.service.web.controllers.NotFoundException;
-import guru.sfg.beer.order.service.web.model.BeerOrderLineDto;
+import guru.sfg.brewery.common.BeerOrderLineDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;

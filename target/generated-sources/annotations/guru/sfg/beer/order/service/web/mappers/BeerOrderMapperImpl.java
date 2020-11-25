@@ -4,10 +4,10 @@ import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.beer.order.service.domain.BeerOrder.BeerOrderBuilder;
 import guru.sfg.beer.order.service.domain.BeerOrderLine;
 import guru.sfg.beer.order.service.domain.Customer;
-import guru.sfg.beer.order.service.web.model.BeerOrderDto;
-import guru.sfg.beer.order.service.web.model.BeerOrderDto.BeerOrderDtoBuilder;
-import guru.sfg.beer.order.service.web.model.BeerOrderLineDto;
-import guru.sfg.beer.order.service.web.model.OrderStatusEnum;
+import guru.sfg.brewery.common.BeerOrderDto;
+import guru.sfg.brewery.common.BeerOrderDto.BeerOrderDtoBuilder;
+import guru.sfg.brewery.common.BeerOrderLineDto;
+import guru.sfg.brewery.common.OrderStatusEnum;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-14T10:31:53+0100",
+    date = "2020-11-25T15:20:53+0100",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 14.0.1 (Oracle Corporation)"
 )
 @Component

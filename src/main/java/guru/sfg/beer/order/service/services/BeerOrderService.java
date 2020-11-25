@@ -18,8 +18,8 @@
 package guru.sfg.beer.order.service.services;
 
 
-import guru.sfg.beer.order.service.web.model.BeerOrderDto;
-import guru.sfg.beer.order.service.web.model.BeerOrderPagedList;
+import guru.sfg.brewery.common.BeerOrderDto;
+import guru.sfg.brewery.common.BeerOrderPagedList;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
