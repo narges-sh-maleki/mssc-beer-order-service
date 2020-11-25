@@ -1,0 +1,7 @@
+package guru.sfg.beer.order.service.domain;
+
+public enum BeerOrderEvents {
+    VALIDATE, VALIDATION_PASSED,VALIDATION_EXCEPTION,
+    ALLOCATE, ALLOCATION_SUCCESS, ALLOCATION_NO_INVENTORY,ALLOCATION_FAILED,
+    PICKED_UP
+}

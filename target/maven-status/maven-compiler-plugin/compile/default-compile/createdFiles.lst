@@ -1,4 +1,5 @@
 guru/sfg/beer/order/service/repositories/BeerOrderRepository.class
+guru/sfg/beer/order/service/domain/BeerOrderEvents.class
 guru/sfg/beer/order/service/domain/BeerOrder.class
 guru/sfg/beer/order/service/config/JmsConfig.class
 guru/sfg/beer/order/service/repositories/CustomerRepository.class
@@ -8,7 +9,6 @@ guru/sfg/brewery/common/BeerOrderDto.class
 guru/sfg/beer/order/service/web/mappers/BeerOrderLineMapperImpl.class
 guru/sfg/beer/order/service/services/beer/BeerService.class
 guru/sfg/beer/order/service/web/mappers/BeerOrderLineMapperImpl_.class
-guru/sfg/brewery/common/OrderStatusEnum.class
 guru/sfg/brewery/common/BeerOrderPagedList.class
 guru/sfg/beer/order/service/web/mappers/BeerOrderMapperImpl$1.class
 guru/sfg/beer/order/service/services/beer/model/BeerStyleEnum.class
@@ -18,8 +18,9 @@ guru/sfg/brewery/common/BeerOrderLineDto.class
 guru/sfg/beer/order/service/repositories/BeerOrderLineRepository.class
 guru/sfg/beer/order/service/config/TaskConfig.class
 guru/sfg/beer/order/service/services/TastingRoomService.class
+guru/sfg/brewery/common/BeerOrderStatusEnum.class
+guru/sfg/beer/order/service/domain/BeerOrderStatusEnum.class
 guru/sfg/beer/order/service/web/controllers/BeerOrderController.class
-guru/sfg/beer/order/service/domain/OrderStatusEnum.class
 guru/sfg/beer/order/service/services/beer/model/BeerDto$BeerDtoBuilder.class
 guru/sfg/beer/order/service/BeerOrderServiceApplication.class
 guru/sfg/beer/order/service/domain/Customer$CustomerBuilder.class

@@ -7,7 +7,7 @@ import guru.sfg.beer.order.service.domain.Customer;
 import guru.sfg.brewery.common.BeerOrderDto;
 import guru.sfg.brewery.common.BeerOrderDto.BeerOrderDtoBuilder;
 import guru.sfg.brewery.common.BeerOrderLineDto;
-import guru.sfg.brewery.common.OrderStatusEnum;
+import guru.sfg.brewery.common.BeerOrderStatusEnum;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-25T15:20:53+0100",
+    date = "2020-11-25T16:07:18+0100",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 14.0.1 (Oracle Corporation)"
 )
 @Component
@@ -46,7 +46,7 @@ public class BeerOrderMapperImpl implements BeerOrderMapper {
         beerOrderDto.createdDate( dateMapper.asOffsetDateTime( beerOrder.getCreatedDate() ) );
         beerOrderDto.lastModifiedDate( dateMapper.asOffsetDateTime( beerOrder.getLastModifiedDate() ) );
         beerOrderDto.beerOrderLines( beerOrderLineSetToBeerOrderLineDtoList( beerOrder.getBeerOrderLines() ) );
-        beerOrderDto.orderStatus( orderStatusEnumToOrderStatusEnum( beerOrder.getOrderStatus() ) );
+        beerOrderDto.orderStatus( beerOrderStatusEnumToBeerOrderStatusEnum( beerOrder.getOrderStatus() ) );
         beerOrderDto.orderStatusCallbackUrl( beerOrder.getOrderStatusCallbackUrl() );
         beerOrderDto.customerRef( beerOrder.getCustomerRef() );
 
@@ -69,7 +69,7 @@ public class BeerOrderMapperImpl implements BeerOrderMapper {
         beerOrder.lastModifiedDate( dateMapper.asTimestamp( dto.getLastModifiedDate() ) );
         beerOrder.customerRef( dto.getCustomerRef() );
         beerOrder.beerOrderLines( beerOrderLineDtoListToBeerOrderLineSet( dto.getBeerOrderLines() ) );
-        beerOrder.orderStatus( orderStatusEnumToOrderStatusEnum1( dto.getOrderStatus() ) );
+        beerOrder.orderStatus( beerOrderStatusEnumToBeerOrderStatusEnum1( dto.getOrderStatus() ) );
         beerOrder.orderStatusCallbackUrl( dto.getOrderStatusCallbackUrl() );
 
         return beerOrder.build();
@@ -103,24 +103,40 @@ public class BeerOrderMapperImpl implements BeerOrderMapper {
         return list;
     }
 
-    protected OrderStatusEnum orderStatusEnumToOrderStatusEnum(guru.sfg.beer.order.service.domain.OrderStatusEnum orderStatusEnum) {
-        if ( orderStatusEnum == null ) {
+    protected BeerOrderStatusEnum beerOrderStatusEnumToBeerOrderStatusEnum(guru.sfg.beer.order.service.domain.BeerOrderStatusEnum beerOrderStatusEnum) {
+        if ( beerOrderStatusEnum == null ) {
             return null;
         }
 
-        OrderStatusEnum orderStatusEnum1;
+        BeerOrderStatusEnum beerOrderStatusEnum1;
 
-        switch ( orderStatusEnum ) {
-            case NEW: orderStatusEnum1 = OrderStatusEnum.NEW;
+        switch ( beerOrderStatusEnum ) {
+            case NEW: beerOrderStatusEnum1 = BeerOrderStatusEnum.NEW;
             break;
-            case READY: orderStatusEnum1 = OrderStatusEnum.READY;
+            case VALIDATION_PENDING: beerOrderStatusEnum1 = BeerOrderStatusEnum.VALIDATION_PENDING;
             break;
-            case PICKED_UP: orderStatusEnum1 = OrderStatusEnum.PICKED_UP;
+            case VALIDATED: beerOrderStatusEnum1 = BeerOrderStatusEnum.VALIDATED;
             break;
-            default: throw new IllegalArgumentException( "Unexpected enum constant: " + orderStatusEnum );
+            case VALIDATION_EXCEPTION: beerOrderStatusEnum1 = BeerOrderStatusEnum.VALIDATION_EXCEPTION;
+            break;
+            case ALLOCATION_PENDING: beerOrderStatusEnum1 = BeerOrderStatusEnum.ALLOCATION_PENDING;
+            break;
+            case ALLOCATED: beerOrderStatusEnum1 = BeerOrderStatusEnum.ALLOCATED;
+            break;
+            case ALLOCATION_EXCEPTION: beerOrderStatusEnum1 = BeerOrderStatusEnum.ALLOCATION_EXCEPTION;
+            break;
+            case PENDING_INVENTORY: beerOrderStatusEnum1 = BeerOrderStatusEnum.PENDING_INVENTORY;
+            break;
+            case PICKED_UP: beerOrderStatusEnum1 = BeerOrderStatusEnum.PICKED_UP;
+            break;
+            case DELIVERED: beerOrderStatusEnum1 = BeerOrderStatusEnum.DELIVERED;
+            break;
+            case DELIVERY_EXCEPTION: beerOrderStatusEnum1 = BeerOrderStatusEnum.DELIVERY_EXCEPTION;
+            break;
+            default: throw new IllegalArgumentException( "Unexpected enum constant: " + beerOrderStatusEnum );
         }
 
-        return orderStatusEnum1;
+        return beerOrderStatusEnum1;
     }
 
     protected Set<BeerOrderLine> beerOrderLineDtoListToBeerOrderLineSet(List<BeerOrderLineDto> list) {
@@ -136,23 +152,39 @@ public class BeerOrderMapperImpl implements BeerOrderMapper {
         return set;
     }
 
-    protected guru.sfg.beer.order.service.domain.OrderStatusEnum orderStatusEnumToOrderStatusEnum1(OrderStatusEnum orderStatusEnum) {
-        if ( orderStatusEnum == null ) {
+    protected guru.sfg.beer.order.service.domain.BeerOrderStatusEnum beerOrderStatusEnumToBeerOrderStatusEnum1(BeerOrderStatusEnum beerOrderStatusEnum) {
+        if ( beerOrderStatusEnum == null ) {
             return null;
         }
 
-        guru.sfg.beer.order.service.domain.OrderStatusEnum orderStatusEnum1;
+        guru.sfg.beer.order.service.domain.BeerOrderStatusEnum beerOrderStatusEnum1;
 
-        switch ( orderStatusEnum ) {
-            case NEW: orderStatusEnum1 = guru.sfg.beer.order.service.domain.OrderStatusEnum.NEW;
+        switch ( beerOrderStatusEnum ) {
+            case NEW: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.NEW;
             break;
-            case READY: orderStatusEnum1 = guru.sfg.beer.order.service.domain.OrderStatusEnum.READY;
+            case VALIDATION_PENDING: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.VALIDATION_PENDING;
             break;
-            case PICKED_UP: orderStatusEnum1 = guru.sfg.beer.order.service.domain.OrderStatusEnum.PICKED_UP;
+            case VALIDATED: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.VALIDATED;
             break;
-            default: throw new IllegalArgumentException( "Unexpected enum constant: " + orderStatusEnum );
+            case VALIDATION_EXCEPTION: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.VALIDATION_EXCEPTION;
+            break;
+            case ALLOCATION_PENDING: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.ALLOCATION_PENDING;
+            break;
+            case ALLOCATED: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.ALLOCATED;
+            break;
+            case ALLOCATION_EXCEPTION: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.ALLOCATION_EXCEPTION;
+            break;
+            case PENDING_INVENTORY: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.PENDING_INVENTORY;
+            break;
+            case PICKED_UP: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.PICKED_UP;
+            break;
+            case DELIVERED: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.DELIVERED;
+            break;
+            case DELIVERY_EXCEPTION: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.DELIVERY_EXCEPTION;
+            break;
+            default: throw new IllegalArgumentException( "Unexpected enum constant: " + beerOrderStatusEnum );
         }
 
-        return orderStatusEnum1;
+        return beerOrderStatusEnum1;
     }
 }
