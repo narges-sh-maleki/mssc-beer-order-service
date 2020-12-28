@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-11-25T16:07:18+0100",
+    date = "2020-12-11T11:24:17+0100",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 14.0.1 (Oracle Corporation)"
 )
 @Component
@@ -131,6 +131,8 @@ public class BeerOrderMapperImpl implements BeerOrderMapper {
             break;
             case DELIVERED: beerOrderStatusEnum1 = BeerOrderStatusEnum.DELIVERED;
             break;
+            case CANCELLED: beerOrderStatusEnum1 = BeerOrderStatusEnum.CANCELLED;
+            break;
             case DELIVERY_EXCEPTION: beerOrderStatusEnum1 = BeerOrderStatusEnum.DELIVERY_EXCEPTION;
             break;
             default: throw new IllegalArgumentException( "Unexpected enum constant: " + beerOrderStatusEnum );
@@ -179,6 +181,8 @@ public class BeerOrderMapperImpl implements BeerOrderMapper {
             case PICKED_UP: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.PICKED_UP;
             break;
             case DELIVERED: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.DELIVERED;
+            break;
+            case CANCELLED: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.CANCELLED;
             break;
             case DELIVERY_EXCEPTION: beerOrderStatusEnum1 = guru.sfg.beer.order.service.domain.BeerOrderStatusEnum.DELIVERY_EXCEPTION;
             break;

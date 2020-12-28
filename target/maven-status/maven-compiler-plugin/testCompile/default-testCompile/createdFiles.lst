@@ -1,2 +1,4 @@
 guru/sfg/beer/order/service/BeerOrderServiceApplicationTests.class
+guru/sfg/beer/order/service/services/BeerOrderManagerImplTest.class
 guru/sfg/beer/order/service/services/beer/BeerServiceImplTest.class
+guru/sfg/brewery/common/BeerOrderDtoTest.class

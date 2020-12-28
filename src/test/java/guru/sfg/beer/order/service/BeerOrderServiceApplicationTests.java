@@ -8,6 +8,7 @@ public class BeerOrderServiceApplicationTests {
 
     @Test
     public void contextLoads() {
+
     }
 
 }
