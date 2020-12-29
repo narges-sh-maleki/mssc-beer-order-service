@@ -1,5 +1,6 @@
-package guru.sfg.brewery.common;
+package guru.sfg.brewery.common.events;
 
+import guru.sfg.brewery.common.BeerOrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ValidateBeerOrderRequest {
-    private  BeerOrderDto beerOrderDto;
+    private BeerOrderDto beerOrderDto;
 }
