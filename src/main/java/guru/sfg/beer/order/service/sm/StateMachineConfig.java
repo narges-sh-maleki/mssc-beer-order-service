@@ -19,6 +19,8 @@ import java.util.EnumSet;
 public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderStatusEnum, BeerOrderEvents> {
 
     private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderValidateAction;
+    private final Action<BeerOrderStatusEnum, BeerOrderEvents> BeerOrderAllocateAction;
+
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<BeerOrderStatusEnum, BeerOrderEvents> config) throws Exception {
@@ -40,28 +42,46 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
     @Override
     public void configure(StateMachineTransitionConfigurer<BeerOrderStatusEnum, BeerOrderEvents> transitions) throws Exception {
         transitions.withExternal()
-                .source(BeerOrderStatusEnum.NEW).target(BeerOrderStatusEnum.VALIDATION_PENDING).event(BeerOrderEvents.VALIDATE)
+                //-------------VALIDATION--------------
+                .source(BeerOrderStatusEnum.NEW).target(BeerOrderStatusEnum.VALIDATION_PENDING)
+                .event(BeerOrderEvents.VALIDATE)
                 .action(beerOrderValidateAction)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.VALIDATION_EXCEPTION).event(BeerOrderEvents.VALIDATION_EXCEPTION)
+                .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.VALIDATION_EXCEPTION)
+                .event(BeerOrderEvents.VALIDATION_EXCEPTION)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.VALIDATED).event(BeerOrderEvents.VALIDATION_PASSED)
+                .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.VALIDATED)
+                .event(BeerOrderEvents.VALIDATION_PASSED)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.VALIDATED).target(BeerOrderStatusEnum.ALLOCATION_PENDING).event(BeerOrderEvents.ALLOCATE)
+                .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.CANCELLED)
+                .event(BeerOrderEvents.CANCEL)
+                //-----------------ALLOCATION-----------
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATED).event(BeerOrderEvents.ALLOCATION_SUCCESS)
+                .source(BeerOrderStatusEnum.VALIDATED).target(BeerOrderStatusEnum.ALLOCATION_PENDING)
+                .event(BeerOrderEvents.ALLOCATE)
+                .action(beerOrderValidateAction)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATION_EXCEPTION).event(BeerOrderEvents.ALLOCATION_FAILED)
+                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATED)
+                .event(BeerOrderEvents.ALLOCATION_SUCCESS)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.PENDING_INVENTORY).event(BeerOrderEvents.ALLOCATION_NO_INVENTORY)
+                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATION_EXCEPTION)
+                .event(BeerOrderEvents.ALLOCATION_FAILED)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATION_EXCEPTION).event(BeerOrderEvents.ALLOCATION_FAILED)
+                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.PENDING_INVENTORY)
+                .event(BeerOrderEvents.ALLOCATION_NO_INVENTORY)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.PICKED_UP).event(BeerOrderEvents.PICKED_UP)
+                .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.CANCELLED)
+                .event(BeerOrderEvents.CANCEL)
+                //------------------DELIVERY--------------
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.DELIVERED).event(BeerOrderEvents.DELIVERED)
+                .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.PICKED_UP)
+                .event(BeerOrderEvents.PICKED_UP)
                 .and().withExternal()
-                .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.CANCELLED).event(BeerOrderEvents.CANCEL);
+                .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.DELIVERED)
+                .event(BeerOrderEvents.DELIVERED)
+                .and().withExternal()
+                .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.CANCELLED)
+                .event(BeerOrderEvents.CANCEL);
 
 
 

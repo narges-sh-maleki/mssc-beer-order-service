@@ -5,7 +5,9 @@ import guru.sfg.beer.order.service.domain.BeerOrderEvents;
 import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
 import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
 import guru.sfg.beer.order.service.sm.BeerOrderStateInterceptor;
+import guru.sfg.beer.order.service.web.mappers.BeerOrderMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineFactory;
@@ -16,10 +18,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BeerOrderManagerImpl implements BeerOrderManager {
 
+    private final JmsTemplate jmsTemplate;
     private final BeerOrderRepository beerOrderRepository;
     private final StateMachineFactory stateMachineFactory;
     public static final String BEER_ORDER_ID_HEADER = "BEER_ORDER_ID_HEADER";
     BeerOrderStateInterceptor interceptor;
+    BeerOrderMapper beerOrderMapper;
 
     @Override
     public BeerOrder newBeerOrder(BeerOrder beerOrder) {
@@ -33,8 +37,12 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
 
     @Override
     public void processValidationResult(BeerOrder beerOrder, Boolean validationResult) {
-        if (validationResult)
-            sendEvent(beerOrder,BeerOrderEvents.VALIDATION_PASSED);
+        if (validationResult) {
+            sendEvent(beerOrder, BeerOrderEvents.VALIDATION_PASSED);
+            //get the object with the latest status from the DB because the interceptor has updated the status
+            BeerOrder updatedBeerOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
+            sendEvent(updatedBeerOrder,BeerOrderEvents.ALLOCATE);
+        }
         else
             sendEvent(beerOrder,BeerOrderEvents.VALIDATION_EXCEPTION);
     }
