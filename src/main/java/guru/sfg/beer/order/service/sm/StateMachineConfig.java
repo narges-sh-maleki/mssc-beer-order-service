@@ -19,7 +19,7 @@ import java.util.EnumSet;
 public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderStatusEnum, BeerOrderEvents> {
 
     private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderValidateAction;
-    private final Action<BeerOrderStatusEnum, BeerOrderEvents> BeerOrderAllocateAction;
+    private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderAllocateAction;
 
 
     @Override
@@ -59,7 +59,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.VALIDATED).target(BeerOrderStatusEnum.ALLOCATION_PENDING)
                 .event(BeerOrderEvents.ALLOCATE)
-                .action(beerOrderValidateAction)
+                .action(beerOrderAllocateAction)
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATED)
                 .event(BeerOrderEvents.ALLOCATION_SUCCESS)
