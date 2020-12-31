@@ -3,5 +3,6 @@ package guru.sfg.beer.order.service.services;
 import guru.sfg.beer.order.service.domain.BeerOrder;
 
 public interface BeerOrderManager  {
-    BeerOrder newBeer(BeerOrder beerOrder);
+    BeerOrder newBeerOrder(BeerOrder beerOrder);
+    void processValidationResult(BeerOrder beerOrder,Boolean validationResult);
 }

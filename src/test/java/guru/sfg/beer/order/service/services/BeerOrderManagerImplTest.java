@@ -29,7 +29,7 @@ class BeerOrderManagerImplTest {
                 .id(UUID.randomUUID())
                 .build();
 //        Mockito.when(beerOrderRepository.save(beerOrder)).thenReturn(beerOrder);
-        beerOrderManager.newBeer(beerOrder);
+        beerOrderManager.newBeerOrder(beerOrder);
         assertEquals(BeerOrderStatusEnum.NEW, beerOrder.getOrderStatus());
     }
 }

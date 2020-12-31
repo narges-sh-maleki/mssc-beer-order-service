@@ -1,10 +1,10 @@
 package guru.sfg.beer.order.service.services;
 
-import guru.sfg.beer.order.service.sm.BeerOrderStateInterceptor;
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.beer.order.service.domain.BeerOrderEvents;
 import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
 import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
+import guru.sfg.beer.order.service.sm.BeerOrderStateInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
@@ -22,7 +22,7 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
     BeerOrderStateInterceptor interceptor;
 
     @Override
-    public BeerOrder newBeer(BeerOrder beerOrder) {
+    public BeerOrder newBeerOrder(BeerOrder beerOrder) {
         beerOrder.setId(null);
         beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
         buildStateMachine(beerOrder);
@@ -31,6 +31,13 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         return saved;
     }
 
+    @Override
+    public void processValidationResult(BeerOrder beerOrder, Boolean validationResult) {
+        if (validationResult)
+            sendEvent(beerOrder,BeerOrderEvents.VALIDATION_PASSED);
+        else
+            sendEvent(beerOrder,BeerOrderEvents.VALIDATION_EXCEPTION);
+    }
 
 
     private void sendEvent(BeerOrder beerOrder, BeerOrderEvents event){
