@@ -47,8 +47,42 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
             sendEvent(beerOrder,BeerOrderEvents.VALIDATION_EXCEPTION);
     }
 
+    @Override
+    public void processAllocationResult(BeerOrder beerOrder, Boolean allocationError, Boolean pendingInventory) {
+        if (allocationError) {
+            sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_FAILED);
+        }
+        else if (pendingInventory) {
+            sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_NO_INVENTORY);
+        }
+        else {
+            sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_SUCCESS);
+            updateAllocateQuantity(beerOrder);
+        }
 
-    private void sendEvent(BeerOrder beerOrder, BeerOrderEvents event){
+    }
+    private void updateAllocateQuantity(BeerOrder beerOrder){
+        BeerOrder foundBeerOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
+
+        //complexity: order of n^2
+        beerOrder.getBeerOrderLines().forEach(beerOrderLine -> {
+            foundBeerOrder.getBeerOrderLines().forEach( beerOrderLine1 ->{
+                if (beerOrderLine.getQuantityAllocated() != beerOrderLine1.getQuantityAllocated())
+                    beerOrderLine.setQuantityAllocated(beerOrderLine1.getQuantityAllocated());
+            });
+        });
+/*
+        //TODO: implement the hashcode and equal in the object
+        //complexity :order of n
+        beerOrder.getBeerOrderLines().forEach(beerOrderLine ->{
+            //add operation in the Set, finds the equal element and if it exists it overrides it.
+            foundBeerOrder.getBeerOrderLines().add(beerOrderLine);
+        });
+
+ */
+    }
+
+        private void sendEvent(BeerOrder beerOrder, BeerOrderEvents event){
         StateMachine<BeerOrderStatusEnum,BeerOrderEvents> sm = buildStateMachine(beerOrder);
 
         //sm.sendEvent(event);
