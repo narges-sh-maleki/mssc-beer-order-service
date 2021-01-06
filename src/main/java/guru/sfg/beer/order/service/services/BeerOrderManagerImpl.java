@@ -22,16 +22,19 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
     private final BeerOrderRepository beerOrderRepository;
     private final StateMachineFactory stateMachineFactory;
     public static final String BEER_ORDER_ID_HEADER = "BEER_ORDER_ID_HEADER";
-    BeerOrderStateInterceptor interceptor;
-    BeerOrderMapper beerOrderMapper;
+    private final BeerOrderStateInterceptor interceptor;
+    private final BeerOrderMapper beerOrderMapper;
 
     @Override
+
     public BeerOrder newBeerOrder(BeerOrder beerOrder) {
         beerOrder.setId(null);
         beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
-        buildStateMachine(beerOrder);
+
         BeerOrder saved = beerOrderRepository.save(beerOrder);
-        sendEvent(saved, BeerOrderEvents.VALIDATE);
+        boolean result = sendEvent(saved, BeerOrderEvents.VALIDATE);
+        if (!result)
+            throw new RuntimeException("Event not accepted");
         return saved;
     }
 
@@ -49,6 +52,9 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
 
     @Override
     public void processAllocationResult(BeerOrder beerOrder, Boolean allocationError, Boolean pendingInventory) {
+       //TODO: get from db
+        // Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(beerOrderDto.getId());
+
         if (allocationError) {
             sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_FAILED);
         }
@@ -82,23 +88,33 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
  */
     }
 
-        private void sendEvent(BeerOrder beerOrder, BeerOrderEvents event){
+        public boolean sendEvent(BeerOrder beerOrder, BeerOrderEvents event){
         StateMachine<BeerOrderStatusEnum,BeerOrderEvents> sm = buildStateMachine(beerOrder);
 
         //sm.sendEvent(event);
-        sm.sendEvent(MessageBuilder
+        return sm.sendEvent(MessageBuilder
                 .withPayload(event)
                 .setHeader(BeerOrderManagerImpl.BEER_ORDER_ID_HEADER,beerOrder.getId())
                 .build());
     }
 
+    /***
+     * it retrieves the latest state from DB and sets it to the StateMachine and returns it.
+     * it also configures the State Machine to write the state to the DB before every change in the state
+     * @param beerOrder
+     * @return StateMachine
+     */
     private StateMachine<BeerOrderStatusEnum, BeerOrderEvents> buildStateMachine(BeerOrder beerOrder){
 
         StateMachine<BeerOrderStatusEnum,BeerOrderEvents> sm = stateMachineFactory.getStateMachine(beerOrder.getId());
+        //BeerOrder foundBeerOrder =  beerOrderRepository.findById(beerOrder.getId()).orElseGet(()->{throw new RuntimeException("not found");});
+
+
         sm.stop();
         sm.getStateMachineAccessor().
                 doWithAllRegions(sma -> {
                     sma.addStateMachineInterceptor(interceptor);
+                    //we configure the machine so that before any change in the states it writes the state to DB
                     sma.resetStateMachine(new DefaultStateMachineContext(beerOrder.getOrderStatus(),null,null,null));
 
                 });

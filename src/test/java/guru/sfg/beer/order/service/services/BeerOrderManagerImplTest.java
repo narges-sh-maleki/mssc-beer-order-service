@@ -3,6 +3,7 @@ package guru.sfg.beer.order.service.services;
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
 import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ class BeerOrderManagerImplTest {
     BeerOrderRepository beerOrderRepository;
 
     @Test
+    @Disabled
     void testStateMachine() {
 
         BeerOrder beerOrder = BeerOrder.builder()

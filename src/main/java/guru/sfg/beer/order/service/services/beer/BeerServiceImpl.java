@@ -1,7 +1,6 @@
 package guru.sfg.beer.order.service.services.beer;
 
 import guru.sfg.beer.order.service.services.beer.model.BeerDto;
-import guru.sfg.beer.order.service.web.controllers.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,8 @@ public class BeerServiceImpl implements BeerService {
     @Value("${sfg.beerServiceHost}")
     private final String beerServiceHost;
 
-    private final static String GET_BY_UPC_PATH = "/api/v1/beer/beerUpc/{upc}";
+    public  static final String GET_BY_UPC_PATH = "/api/v1/beer/beerUpc/{upc}";
+    public  static final String GET_BY_UPC_PATH_1 = "/api/v1/beer/beerUpc/";
 
     private final RestTemplate restTemplate;
 
