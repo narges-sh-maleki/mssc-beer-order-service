@@ -68,9 +68,17 @@ public class BeerOrderManagerImplIT {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         testCustomer = Customer.builder().customerName("Test Customer").build();
         customerRepository.save(testCustomer);
+/*
+        ActiveMQServer server = ActiveMQServers.newActiveMQServer(new ConfigurationImpl()
+                .setPersistenceEnabled(false)
+                .setJournalDirectory("target/data/journal")
+                .setSecurityEnabled(false)
+                .addAcceptorConfiguration("invm", "vm://0"));
+
+        server.start();*/
     }
 
     private BeerOrder createBeerOrder(){
