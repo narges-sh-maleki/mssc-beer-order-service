@@ -34,7 +34,7 @@ public class BeerOrderAllocateAction implements Action<BeerOrderStatusEnum, Beer
                 .beerOrderDto(beerOrderMapper.beerOrderToDto(beerOrder))
                 .build();
         jmsTemplate.convertAndSend(JmsConfig.ALLOCATE_ORDER, allocateBeerOrderRequest);
-        log.debug("Set allocate request for:" + beerOrderId );
+        log.debug("#################Send Allocate Request for:" + beerOrderId );
 
 
     }

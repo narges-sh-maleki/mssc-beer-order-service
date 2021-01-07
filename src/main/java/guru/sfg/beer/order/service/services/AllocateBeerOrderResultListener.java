@@ -19,9 +19,12 @@ public class AllocateBeerOrderResultListener {
     @JmsListener(destination = JmsConfig.ALLOCATE_ORDER_RESULT)
     public void allocateOrderResultListener(AllocateBeerOrderResult allocateBeerOrderResult){
 
+        log.debug("################ Allocate Result Listener");
+
         beerOrderManager.processAllocationResult(beerOrderMapper.dtoToBeerOrder( allocateBeerOrderResult.getBeerOrderDto()),
                 allocateBeerOrderResult.getAllocationError(),
                 allocateBeerOrderResult.getPendingInventory());
+
 
 
     }

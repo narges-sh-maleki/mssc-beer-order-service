@@ -7,6 +7,7 @@ import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
 import guru.sfg.beer.order.service.sm.BeerOrderStateInterceptor;
 import guru.sfg.beer.order.service.web.mappers.BeerOrderMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BeerOrderManagerImpl implements BeerOrderManager {
 
     private final JmsTemplate jmsTemplate;
@@ -40,30 +42,32 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
 
     @Override
     public void processValidationResult(BeerOrder beerOrder, Boolean validationResult) {
+        BeerOrder updatedBeerOrder1 = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
         if (validationResult) {
-            sendEvent(beerOrder, BeerOrderEvents.VALIDATION_PASSED);
+
+            sendEvent(updatedBeerOrder1, BeerOrderEvents.VALIDATION_PASSED);
             //get the object with the latest status from the DB because the interceptor has updated the status
-            BeerOrder updatedBeerOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
-            sendEvent(updatedBeerOrder,BeerOrderEvents.ALLOCATE);
+            BeerOrder updatedBeerOrder2 = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
+            sendEvent(updatedBeerOrder2,BeerOrderEvents.ALLOCATE);
         }
         else
-            sendEvent(beerOrder,BeerOrderEvents.VALIDATION_EXCEPTION);
+            sendEvent(updatedBeerOrder1,BeerOrderEvents.VALIDATION_EXCEPTION);
     }
 
     @Override
     public void processAllocationResult(BeerOrder beerOrder, Boolean allocationError, Boolean pendingInventory) {
        //TODO: get from db
-        // Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(beerOrderDto.getId());
+        BeerOrder updatedBeerOrder1 = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
 
         if (allocationError) {
-            sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_FAILED);
+            sendEvent(updatedBeerOrder1, BeerOrderEvents.ALLOCATION_FAILED);
         }
         else if (pendingInventory) {
-            sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_NO_INVENTORY);
+            sendEvent(updatedBeerOrder1, BeerOrderEvents.ALLOCATION_NO_INVENTORY);
         }
         else {
-            sendEvent(beerOrder, BeerOrderEvents.ALLOCATION_SUCCESS);
-            updateAllocateQuantity(beerOrder);
+            sendEvent(updatedBeerOrder1, BeerOrderEvents.ALLOCATION_SUCCESS);
+            updateAllocateQuantity(updatedBeerOrder1);
         }
 
     }
@@ -89,6 +93,8 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
     }
 
         public boolean sendEvent(BeerOrder beerOrder, BeerOrderEvents event){
+
+        log.debug("############### Send Event: " + event.name().toString());
         StateMachine<BeerOrderStatusEnum,BeerOrderEvents> sm = buildStateMachine(beerOrder);
 
         //sm.sendEvent(event);

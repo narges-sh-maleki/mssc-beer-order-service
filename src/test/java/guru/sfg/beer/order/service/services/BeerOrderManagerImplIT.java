@@ -71,14 +71,7 @@ public class BeerOrderManagerImplIT {
     void setUp() throws Exception {
         testCustomer = Customer.builder().customerName("Test Customer").build();
         customerRepository.save(testCustomer);
-/*
-        ActiveMQServer server = ActiveMQServers.newActiveMQServer(new ConfigurationImpl()
-                .setPersistenceEnabled(false)
-                .setJournalDirectory("target/data/journal")
-                .setSecurityEnabled(false)
-                .addAcceptorConfiguration("invm", "vm://0"));
 
-        server.start();*/
     }
 
     private BeerOrder createBeerOrder(){
@@ -99,7 +92,7 @@ public class BeerOrderManagerImplIT {
 
 
     @Test
-    void newBeerOrder() throws JsonProcessingException {
+    void testNewToValidationPending() throws JsonProcessingException {
         //given
         BeerOrder beerOrder = createBeerOrder();
 
@@ -111,8 +104,29 @@ public class BeerOrderManagerImplIT {
         BeerOrder resultBeerOrder = beerOrderManager.newBeerOrder(beerOrder);
 
         //then
-        BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
+        BeerOrder foundOrder = beerOrderRepository.findById(resultBeerOrder.getId()).orElseThrow();
         assertThat(foundOrder.getOrderStatus()).isEqualTo(BeerOrderStatusEnum.VALIDATION_PENDING);
+
+
+    }
+
+    @Test
+    void testNewToAllocated() throws JsonProcessingException, InterruptedException {
+        //given
+        BeerOrder beerOrder = createBeerOrder();
+
+        BeerDto beerDto = BeerDto.builder().id(beerId).upc("123456").build();
+        wireMockServer.stubFor(get(BeerServiceImpl.GET_BY_UPC_PATH_1+ "123456").willReturn(okJson(objectMapper.writeValueAsString(beerDto))));
+
+
+        //when
+        BeerOrder resultBeerOrder = beerOrderManager.newBeerOrder(beerOrder);
+
+        Thread.sleep(10000);
+
+        //then
+        BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
+        assertThat(foundOrder.getOrderStatus()).isEqualTo(BeerOrderStatusEnum.ALLOCATED);
 
 
     }

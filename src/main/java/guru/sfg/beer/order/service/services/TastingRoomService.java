@@ -7,7 +7,6 @@ import guru.sfg.beer.order.service.repositories.CustomerRepository;
 import guru.sfg.brewery.common.BeerOrderDto;
 import guru.sfg.brewery.common.BeerOrderLineDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +37,7 @@ public class TastingRoomService {
 
     @Transactional
     //TODO :uncomment
-    @Scheduled(fixedRate = 2000) //run every 2 seconds
+   // @Scheduled(fixedRate = 2000) //run every 2 seconds
     public void placeTastingRoomOrder(){
 
         List<Customer> customerList = customerRepository.findAllByCustomerNameLike(BeerOrderBootStrap.TASTING_ROOM);
