@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jenspiegsa.wiremockextension.WireMockExtension;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import guru.sfg.beer.order.service.domain.BeerOrder;
-import guru.sfg.beer.order.service.domain.BeerOrderEvents;
 import guru.sfg.beer.order.service.domain.BeerOrderLine;
 import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
 import guru.sfg.beer.order.service.domain.Customer;
@@ -14,7 +13,6 @@ import guru.sfg.beer.order.service.repositories.CustomerRepository;
 import guru.sfg.beer.order.service.services.beer.BeerServiceImpl;
 import guru.sfg.beer.order.service.services.beer.model.BeerDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +89,7 @@ public class BeerOrderManagerImplIT {
         return beerOrder;
     }
 
+
     @Test
     void newBeerOrder() throws JsonProcessingException {
         //given
@@ -111,21 +110,4 @@ public class BeerOrderManagerImplIT {
     }
 
 
-    @Disabled
-    @Test
-    void newBeerOrderDeleteMe() throws JsonProcessingException {
-        //given
-        BeerOrder beerOrder = BeerOrder.builder().build();
-        beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
-        BeerOrder saved = beerOrderRepository.saveAndFlush(beerOrder);
-
-
-        beerOrderManager.sendEvent(saved, BeerOrderEvents.VALIDATE);
-
-
-        //then
-        assertThat(saved.getOrderStatus()).isEqualTo(BeerOrderStatusEnum.VALIDATION_PENDING);
-
-
-    }
 }

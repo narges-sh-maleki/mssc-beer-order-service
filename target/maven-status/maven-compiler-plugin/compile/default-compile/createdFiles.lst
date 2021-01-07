@@ -10,7 +10,6 @@ guru/sfg/beer/order/service/web/mappers/BeerOrderLineMapper.class
 guru/sfg/beer/order/service/services/BeerOrderServiceImpl.class
 guru/sfg/beer/order/service/services/BeerOrderManagerImpl.class
 guru/sfg/beer/order/service/config/TaskConfig.class
-guru/sfg/beer/order/service/config/BeerOrderStateInterceptor.class
 guru/sfg/beer/order/service/services/beer/model/BeerDto$BeerDtoBuilder.class
 guru/sfg/beer/order/service/domain/Customer$CustomerBuilder.class
 guru/sfg/beer/order/service/services/beer/model/BeerDto.class
@@ -45,5 +44,4 @@ guru/sfg/beer/order/service/domain/BeerOrderLine$BeerOrderLineBuilder.class
 guru/sfg/beer/order/service/domain/BeerOrderLine.class
 guru/sfg/beer/order/service/services/beer/BeerServiceImpl.class
 guru/sfg/beer/order/service/domain/BaseEntity.class
-guru/sfg/beer/order/service/config/StateMachineConfig.class
 guru/sfg/beer/order/service/web/mappers/BeerOrderMapperImpl.class
