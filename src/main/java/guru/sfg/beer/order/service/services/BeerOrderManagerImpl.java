@@ -56,7 +56,7 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
 
     @Override
     public void processAllocationResult(BeerOrder beerOrder, Boolean allocationError, Boolean pendingInventory) {
-       //TODO: get from db
+
         BeerOrder updatedBeerOrder1 = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
 
         if (allocationError) {
@@ -67,29 +67,59 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         }
         else {
             sendEvent(updatedBeerOrder1, BeerOrderEvents.ALLOCATION_SUCCESS);
-            updateAllocateQuantity(updatedBeerOrder1);
+
+            updateAllocateQuantity(beerOrder);
         }
 
     }
+
+    @Override
+    public void pickupOrder(BeerOrder beerOrder) {
+         BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
+         sendEvent(foundOrder,BeerOrderEvents.PICKED_UP);
+
+    }
+
     private void updateAllocateQuantity(BeerOrder beerOrder){
         BeerOrder foundBeerOrder = beerOrderRepository.findById(beerOrder.getId()).orElseThrow();
 
-        //complexity: order of n^2
+        //Solution1: nested for : complexity: order of n^2
+        /*
         beerOrder.getBeerOrderLines().forEach(beerOrderLine -> {
             foundBeerOrder.getBeerOrderLines().forEach( beerOrderLine1 ->{
-                if (beerOrderLine.getQuantityAllocated() != beerOrderLine1.getQuantityAllocated())
-                    beerOrderLine.setQuantityAllocated(beerOrderLine1.getQuantityAllocated());
+                if (beerOrderLine.getId().equals(beerOrderLine1.getId()))
+                    beerOrderLine1.setQuantityAllocated(beerOrderLine.getQuantityAllocated());
             });
         });
-/*
+        */
+
         //TODO: implement the hashcode and equal in the object
         //complexity :order of n
         beerOrder.getBeerOrderLines().forEach(beerOrderLine ->{
+
+            //Solution2: order n
+            /*
             //add operation in the Set, finds the equal element and if it exists it overrides it.
-            foundBeerOrder.getBeerOrderLines().add(beerOrderLine);
+           Boolean notExist = foundBeerOrder.getBeerOrderLines().add(beerOrderLine);
+           if (notExist)
+               foundBeerOrder.getBeerOrderLines().remove(beerOrderLine);
+            */
+
+           //Solution3: order ?
+              foundBeerOrder.getBeerOrderLines().stream().filter(line -> {
+                  return line.getId().equals(beerOrderLine.getId());
+              }).forEach(line2 -> {
+                  line2.setQuantityAllocated(beerOrderLine.getQuantityAllocated());
+              });
+
+
+
         });
 
- */
+        beerOrderRepository.saveAndFlush(foundBeerOrder);
+
+
+
     }
 
         public boolean sendEvent(BeerOrder beerOrder, BeerOrderEvents event){

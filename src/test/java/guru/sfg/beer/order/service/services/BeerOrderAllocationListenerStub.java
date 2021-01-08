@@ -21,6 +21,9 @@ public class BeerOrderAllocationListenerStub {
         log.debug("########################### Allocate Order Listener Stub");
 
         BeerOrderDto beerOrderDto = request.getBeerOrderDto();
+        beerOrderDto.getBeerOrderLines().forEach(line -> {
+            line.setQuantityAllocated(line.getOrderQuantity());
+        });
         AllocateBeerOrderResult result = AllocateBeerOrderResult.builder()
                 .beerOrderDto(beerOrderDto)
                 .allocationError(false)
