@@ -21,13 +21,19 @@ public class BeerOrderAllocationListenerStub {
         log.debug("########################### Allocate Order Listener Stub");
 
         BeerOrderDto beerOrderDto = request.getBeerOrderDto();
+        boolean allocationError = false;
+        boolean pendingInventory = false;
+        allocationError = request.getBeerOrderDto().getCustomerRef() != null && request.getBeerOrderDto().getCustomerRef().equals("allocation-failed")? true :false;
+        pendingInventory = request.getBeerOrderDto().getCustomerRef() != null && request.getBeerOrderDto().getCustomerRef().equals("pendingInventory")? true :false;
+
         beerOrderDto.getBeerOrderLines().forEach(line -> {
             line.setQuantityAllocated(line.getOrderQuantity());
         });
+
         AllocateBeerOrderResult result = AllocateBeerOrderResult.builder()
                 .beerOrderDto(beerOrderDto)
-                .allocationError(false)
-                .pendingInventory(false)
+                .allocationError(allocationError)
+                .pendingInventory(pendingInventory)
                 .build();
 
 

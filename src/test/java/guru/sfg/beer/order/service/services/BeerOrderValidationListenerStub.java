@@ -22,9 +22,14 @@ public class BeerOrderValidationListenerStub {
         log.debug("########################### Validate Order Listener Stub");
 
         UUID orderId = request.getBeerOrderDto().getId();
+
+        boolean validated = true;
+        if (request.getBeerOrderDto().getCustomerRef() != null && request.getBeerOrderDto().getCustomerRef().equals("Failed Validation"))
+            validated = false;
+
         ValidateBeerOrderResult result = ValidateBeerOrderResult.builder()
                 .orderId(orderId)
-                .validated(true).build();
+                .validated(validated).build();
 
 
         jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_RESULT,result);

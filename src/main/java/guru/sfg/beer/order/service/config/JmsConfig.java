@@ -14,6 +14,7 @@ public class JmsConfig {
     public static final String VALIDATE_ORDER_RESULT = "validate-order-result";
     public static final String ALLOCATE_ORDER_RESULT = "allocate-order-result";
     public final static String ALLOCATE_ORDER = "allocate-order";
+    public static final String FAILED_ALLOCATION_COMPENSATION_TRX = "FAILED_ALLOCATION_COMPENSATION_TRX";
 
     @Bean
     public MessageConverter messageConverter(ObjectMapper objectMapper){

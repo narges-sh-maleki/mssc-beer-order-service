@@ -3,6 +3,7 @@ package guru.sfg.beer.order.service.sm;
 import guru.sfg.beer.order.service.domain.BeerOrderEvents;
 import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
@@ -20,6 +21,9 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
 
     private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderValidateAction;
     private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderAllocateAction;
+    @Qualifier("orderValidationFailedAction")
+    private final Action<BeerOrderStatusEnum, BeerOrderEvents> orderValidationFailedAction;
+    private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderAllocationFailedAction;
 
 
     @Override
@@ -49,6 +53,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.VALIDATION_EXCEPTION)
                 .event(BeerOrderEvents.VALIDATION_EXCEPTION)
+                .action(orderValidationFailedAction)
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.VALIDATION_PENDING).target(BeerOrderStatusEnum.VALIDATED)
                 .event(BeerOrderEvents.VALIDATION_PASSED)
@@ -66,6 +71,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.ALLOCATION_EXCEPTION)
                 .event(BeerOrderEvents.ALLOCATION_FAILED)
+                .action(beerOrderAllocationFailedAction)
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.ALLOCATION_PENDING).target(BeerOrderStatusEnum.PENDING_INVENTORY)
                 .event(BeerOrderEvents.ALLOCATION_NO_INVENTORY)
