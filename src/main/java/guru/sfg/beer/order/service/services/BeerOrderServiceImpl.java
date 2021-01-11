@@ -20,6 +20,7 @@ package guru.sfg.beer.order.service.services;
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
 import guru.sfg.beer.order.service.domain.Customer;
+import guru.sfg.beer.order.service.exceptions.OrderNotFound;
 import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
 import guru.sfg.beer.order.service.repositories.CustomerRepository;
 import guru.sfg.beer.order.service.web.mappers.BeerOrderMapper;
@@ -49,15 +50,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     //private final ApplicationEventPublisher publisher;
     private final BeerOrderManager beerOrderManager;
 
-   /* public BeerOrderServiceImpl(BeerOrderRepository beerOrderRepository,
-                                CustomerRepository customerRepository,
-                                BeerOrderMapper beerOrderMapper, ApplicationEventPublisher publisher) {
-        this.beerOrderRepository = beerOrderRepository;
-        this.customerRepository = customerRepository;
-        this.beerOrderMapper = beerOrderMapper;
-        this.publisher = publisher;
 
-    }*/
 
     @Override
     public BeerOrderPagedList listOrders(UUID customerId, Pageable pageable) {
@@ -95,11 +88,11 @@ public class BeerOrderServiceImpl implements BeerOrderService {
 
             BeerOrder savedBeerOrder = beerOrderManager.newBeerOrder(beerOrder);
            // BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
-
-            log.debug("Saved Beer Order: " + beerOrder.getId());
-
             //todo impl
-          //  publisher.publishEvent(new NewBeerOrderEvent(savedBeerOrder));
+            //
+            // publisher.publishEvent(new NewBeerOrderEvent(savedBeerOrder));
+
+            log.debug("Saved Beer Order: " + savedBeerOrder.getId());
 
             return beerOrderMapper.beerOrderToDto(savedBeerOrder);
         }
@@ -114,10 +107,12 @@ public class BeerOrderServiceImpl implements BeerOrderService {
 
     @Override
     public void pickupOrder(UUID customerId, UUID orderId) {
-        BeerOrder beerOrder = getOrder(customerId, orderId);
-        beerOrder.setOrderStatus(BeerOrderStatusEnum.PICKED_UP);
 
-        beerOrderRepository.save(beerOrder);
+        BeerOrder beerOrder = beerOrderRepository.findById(orderId).orElseThrow(() -> {throw new OrderNotFound("Order not found");});
+        beerOrderManager.pickupOrder(beerOrder);
+      /* BeerOrder beerOrder = getOrder(customerId, orderId);
+        beerOrder.setOrderStatus(BeerOrderStatusEnum.PICKED_UP);
+        beerOrderRepository.save(beerOrder);*/
     }
 
     private BeerOrder getOrder(UUID customerId, UUID orderId){
