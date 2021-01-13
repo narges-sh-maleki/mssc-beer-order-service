@@ -24,6 +24,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
     @Qualifier("orderValidationFailedAction")
     private final Action<BeerOrderStatusEnum, BeerOrderEvents> orderValidationFailedAction;
     private final Action<BeerOrderStatusEnum, BeerOrderEvents> beerOrderAllocationFailedAction;
+    private final CancelOrderAction cancelOrderAction;
 
 
     @Override
@@ -40,7 +41,8 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
                 .end(BeerOrderStatusEnum.ALLOCATION_EXCEPTION)
                 .end(BeerOrderStatusEnum.PICKED_UP)
                 .end(BeerOrderStatusEnum.DELIVERED)
-                .end(BeerOrderStatusEnum.DELIVERY_EXCEPTION);
+                .end(BeerOrderStatusEnum.DELIVERY_EXCEPTION)
+                .end(BeerOrderStatusEnum.CANCELLED);
     }
 
     @Override
@@ -87,7 +89,9 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<BeerOrderS
                 .event(BeerOrderEvents.DELIVERED)
                 .and().withExternal()
                 .source(BeerOrderStatusEnum.ALLOCATED).target(BeerOrderStatusEnum.CANCELLED)
-                .event(BeerOrderEvents.CANCEL);
+                .event(BeerOrderEvents.CANCEL)
+                .action(cancelOrderAction)
+        ;
 
 
 

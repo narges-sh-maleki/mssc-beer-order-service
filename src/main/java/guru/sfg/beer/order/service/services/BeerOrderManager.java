@@ -7,4 +7,5 @@ public interface BeerOrderManager  {
     void processValidationResult(BeerOrder beerOrder,Boolean validationResult);
     void processAllocationResult(BeerOrder beerOrder, Boolean allocationError, Boolean pendingInventory);
     void pickupOrder(BeerOrder beerOrder);
+    void cancelOrder(BeerOrder beerOrder);
 }

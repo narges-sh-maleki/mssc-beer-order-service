@@ -115,6 +115,11 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         beerOrderRepository.save(beerOrder);*/
     }
 
+    @Override
+    public void cancelOrder(UUID customerId, UUID orderId) {
+
+    }
+
     private BeerOrder getOrder(UUID customerId, UUID orderId){
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 

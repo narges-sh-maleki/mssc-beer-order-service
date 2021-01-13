@@ -16,6 +16,7 @@ public class ValidateBeerOrderResultListener {
     private  final BeerOrderRepository beerOrderRepository;
     private final BeerOrderManager beerOrderManager;
 
+
     @JmsListener(destination = JmsConfig.VALIDATE_ORDER_RESULT)
     public void listenToValidateOrderResult(ValidateBeerOrderResult result) {
         log.debug("################ Validate Result Listener");

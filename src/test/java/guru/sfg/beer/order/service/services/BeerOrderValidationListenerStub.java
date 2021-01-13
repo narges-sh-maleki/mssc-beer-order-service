@@ -22,6 +22,8 @@ public class BeerOrderValidationListenerStub {
         log.debug("########################### Validate Order Listener Stub");
 
         UUID orderId = request.getBeerOrderDto().getId();
+        if (request.getBeerOrderDto().getCustomerRef() != null && request.getBeerOrderDto().getCustomerRef().equals("do-not-validate-my-order"))
+            return;
 
         boolean validated = true;
         if (request.getBeerOrderDto().getCustomerRef() != null && request.getBeerOrderDto().getCustomerRef().equals("Failed Validation"))
