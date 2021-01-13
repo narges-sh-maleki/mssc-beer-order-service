@@ -262,7 +262,7 @@ public class BeerOrderManagerImplIT {
         assertThat(foundOrder.getOrderStatus()).isEqualTo(BeerOrderStatusEnum.CANCELLED);
     }
 
-    @RepeatedTest(2)
+    @RepeatedTest(1)
     void AllocatedToCancel() throws JsonProcessingException {
         //given
         BeerOrder beerOrder = createBeerOrder();
