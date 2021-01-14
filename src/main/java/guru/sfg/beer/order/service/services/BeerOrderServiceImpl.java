@@ -24,6 +24,7 @@ import guru.sfg.beer.order.service.exceptions.OrderNotFound;
 import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
 import guru.sfg.beer.order.service.repositories.CustomerRepository;
 import guru.sfg.beer.order.service.web.mappers.BeerOrderMapper;
+import guru.sfg.beer.order.service.web.mappers.CustomerMapper;
 import guru.sfg.brewery.common.BeerOrderDto;
 import guru.sfg.brewery.common.BeerOrderPagedList;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     private final BeerOrderMapper beerOrderMapper;
     //private final ApplicationEventPublisher publisher;
     private final BeerOrderManager beerOrderManager;
+    private final CustomerMapper customerMapper;
 
 
 
@@ -119,6 +121,9 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     public void cancelOrder(UUID customerId, UUID orderId) {
 
     }
+
+
+
 
     private BeerOrder getOrder(UUID customerId, UUID orderId){
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
