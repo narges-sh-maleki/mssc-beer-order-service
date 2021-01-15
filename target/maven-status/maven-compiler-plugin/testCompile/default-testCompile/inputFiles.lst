@@ -1,2 +1,6 @@
 /Users/mostafarastegar/Desktop/narges/SFG/mssc-brewery-ws/mssc-beer-order-service/src/test/java/guru/sfg/beer/order/service/services/BeerOrderManagerImplIT.java
+/Users/mostafarastegar/Desktop/narges/SFG/mssc-brewery-ws/mssc-beer-order-service/src/test/java/guru/sfg/beer/order/service/services/BeerOrderServiceImplTest.java
 /Users/mostafarastegar/Desktop/narges/SFG/mssc-brewery-ws/mssc-beer-order-service/src/test/java/guru/sfg/beer/order/service/sm/StateMachineConfigTest.java
+/Users/mostafarastegar/Desktop/narges/SFG/mssc-brewery-ws/mssc-beer-order-service/src/test/java/guru/sfg/beer/order/service/services/BeerOrderValidationListenerStub.java
+/Users/mostafarastegar/Desktop/narges/SFG/mssc-brewery-ws/mssc-beer-order-service/src/test/java/guru/sfg/beer/order/service/services/BeerOrderAllocationListenerStub.java
+/Users/mostafarastegar/Desktop/narges/SFG/mssc-brewery-ws/mssc-beer-order-service/src/test/java/guru/sfg/beer/order/service/services/TestConfig.java

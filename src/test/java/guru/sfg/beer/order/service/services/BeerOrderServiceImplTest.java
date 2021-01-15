@@ -9,6 +9,7 @@ import guru.sfg.beer.order.service.web.mappers.BeerOrderMapper;
 import guru.sfg.brewery.common.BeerOrderDto;
 import guru.sfg.brewery.common.BeerOrderLineDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.when;
 //@ActiveProfiles("tst")
 //@SpringBootTest
 @ExtendWith(MockitoExtension.class)
+//@Disabled
 class BeerOrderServiceImplTest {
 
     @InjectMocks
@@ -49,6 +51,7 @@ class BeerOrderServiceImplTest {
 
     }
 
+    @Disabled
     @Test
     void placeOrderHappy() {
         //given

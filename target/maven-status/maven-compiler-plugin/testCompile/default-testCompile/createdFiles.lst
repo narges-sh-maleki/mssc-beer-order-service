@@ -1,3 +1,6 @@
+guru/sfg/beer/order/service/services/BeerOrderServiceImplTest.class
+guru/sfg/beer/order/service/services/BeerOrderAllocationListenerStub.class
 guru/sfg/beer/order/service/sm/StateMachineConfigTest.class
-guru/sfg/beer/order/service/services/BeerOrderManagerImplIT$testConfig.class
+guru/sfg/beer/order/service/services/BeerOrderValidationListenerStub.class
+guru/sfg/beer/order/service/services/TestConfig.class
 guru/sfg/beer/order/service/services/BeerOrderManagerImplIT.class
