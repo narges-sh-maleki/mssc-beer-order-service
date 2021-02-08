@@ -40,7 +40,7 @@
         <awatility.version>4.0.2</awatility.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
-        <docker.image.prefix>sfgbreweryworks</docker.image.prefix>
+        <docker.image.prefix>nargesshmaleki</docker.image.prefix>
         <docker.image.name>${project.artifactId}</docker.image.name>
 
 
